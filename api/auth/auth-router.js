@@ -1,7 +1,13 @@
-const router = require('express').Router();
+const router = require("express").Router();
+const bcryptjs = require("bcryptjs");
 
-router.post('/register', (req, res) => {
-  res.end('implement register, please!');
+const jwt = require("jsonwebtoken");
+const { jwtSecret } = require("../../config/secrets");
+
+const User = require("./auth-model");
+
+router.post("/register", (req, res) => {
+  res.end("implement register, please!");
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
@@ -29,8 +35,8 @@ router.post('/register', (req, res) => {
   */
 });
 
-router.post('/login', (req, res) => {
-  res.end('implement login, please!');
+router.post("/login", (req, res) => {
+  res.end("implement login, please!");
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
@@ -55,5 +61,21 @@ router.post('/login', (req, res) => {
       the response body should include a string exactly as follows: "invalid credentials".
   */
 });
+
+// building the token here
+function buildToken(user) {
+  const payload = {
+    // claims go here
+    subject: user.id,
+    username: user.username,
+  };
+  const config = {
+    // token will expire in one day
+    expiresIn: "1d",
+  };
+  return jwt.sign(payload, jwtSecret, config);
+}
+
+module.exports = router;
 
 module.exports = router;
