@@ -6,8 +6,9 @@ const { jwtSecret } = require("../../config/secrets");
 
 const { isValid } = require("./auth-validate");
 const User = require("./auth-model");
+const { checkBodyExists, checkUsernameValid } = require("./auth-middleware");
 
-router.post("/register", (req, res) => {
+router.post("/register", checkBodyExists, checkUsernameValid, (req, res) => {
   // res.end("implement register, please!");
   const credentials = req.body;
 
@@ -58,7 +59,7 @@ router.post("/register", (req, res) => {
   */
 });
 
-router.post("/login", (req, res) => {
+router.post("/login", checkBodyExists, (req, res) => {
   // res.end("implement login, please!");
 
   const { username, password } = req.body;
